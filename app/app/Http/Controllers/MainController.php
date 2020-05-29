@@ -91,34 +91,60 @@ class MainController extends Controller
             'driver_name.*' => 'required',
         ]);
 
+        // Обновляем данные автопарка
+
+        $autopark = Autopark::find($id);
+        $autopark->fill([
+            'name' => $request->input('name'),
+            'address' => $request->input('address'),
+            'work_time' => $request->input('work_time'),
+        ]);
+        $autopark->save();
+
         // Перебираем все полученые данные о машинах
 
         $counter = count($request->input('number'));
         for ($i = 0; $i < $counter; $i++) {
 
-            // Если машина существует, обновляем ее данные
+            // Добавление новой машины на странице редактирования
 
-            $concurrenceNumber = $request->input("hidden-number.$i") != $request->input("number.$i");
-            $concurrenceName = $request->input("hidden-name.$i") != $request->input("driver_name.$i");
-            if ($concurrenceNumber || $concurrenceName){
-                $car=  Car::where(['number' => $request->input("hidden-number.$i"),'driver_name' => $request->input("hidden-name.$i")])->first();
-                $car->fill([
-                    'number' => $request->input("number.$i"),
-                    'driver_name' => $request->input("driver_name.$i")
+            if ($request->input("hidden-number.$i") === null){
+
+                // Если машина уже существует, привязываем ее к автопарку
+
+                $carExist = Car::where('number','=', $request->input("number.$i"))->first();
+                if ($carExist && $request->input("number.$i") == $carExist->number){
+                    $autopark->cars()->syncWithoutDetaching($carExist->id);
+                }else {
+
+                    // Добавляем новую машину и привязываем к автопарку
+
+                    $car = new Car;
+                    $car->fill([
+                        'number' => $request->input("number.$i"),
+                        'driver_name' => $request->input("driver_name.$i")
                     ]);
-                $car->save();
+                    $car->save();
+                    $autopark->cars()->syncWithoutDetaching($car->id);
+                }
+            }else{
+
+                // Если машина существует, обновляем ее данные
+
+                $concurrenceNumber = $request->input("hidden-number.$i") != $request->input("number.$i");
+                $concurrenceName = $request->input("hidden-name.$i") != $request->input("driver_name.$i");
+                if ($concurrenceNumber || $concurrenceName){
+                    $car=  Car::where(['number' => $request->input("hidden-number.$i"),'driver_name' => $request->input("hidden-name.$i")])->first();
+                    $car->fill([
+                        'number' => $request->input("number.$i"),
+                        'driver_name' => $request->input("driver_name.$i")
+                    ]);
+                    $car->save();
+                }
             }
+
+
         }
-
-        // Обновляем данные автопарка
-
-        $autopark = Autopark::find($id);
-        $autopark->fill([
-                'name' => $request->input('name'),
-                'address' => $request->input('address'),
-                'work_time' => $request->input('work_time'),
-            ]);
-        $autopark->save();
 
         return redirect()->back()->with('status', 'Автопарк обновлен!');
     }
@@ -127,5 +153,17 @@ class MainController extends Controller
     {
         Autopark::find($id)->delete();
         return redirect()->back()->with('status', 'Автопарк удален!');
+    }
+
+    public function destroyCar($autopark_id, $car_id)
+    {
+//        $autopark = Autopark::find($autopark_id);
+//        $car = Car::find($car_id);
+        Car::destroy($car_id);
+//        print_r($autopark,$car);
+        echo "Delete successfully $autopark_id";
+//        dd([$autopark,$car]);
+//        $car->delete();
+//        exit;
     }
 }

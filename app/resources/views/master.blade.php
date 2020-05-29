@@ -10,6 +10,7 @@
               crossorigin="anonymous">
         <!-- Fonts -->
         <link href="https://fonts.googleapis.com/css?family=Nunito:200,600" rel="stylesheet">
+        @yield('token')
         <title>Document</title>
         <style>
             html, body {

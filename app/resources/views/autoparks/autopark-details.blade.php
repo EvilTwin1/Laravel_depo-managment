@@ -11,6 +11,7 @@
         <ul class="list-group list-group-flush">
             @foreach($autopark->cars as $car)
                 <li class="list-group-item">
+
                     <p>Номер машины: {{$car->number}}</p>
                     <p>Имя водителя: {{$car->driver_name}}</p>
                 </li>

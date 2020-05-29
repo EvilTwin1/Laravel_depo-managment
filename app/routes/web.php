@@ -15,11 +15,12 @@
 Route::post('/store', 'MainController@store')->name('store');
 Route::post('/update/{id}', 'MainController@update')->name('update');
 Route::delete('/destroy/{id}', 'MainController@destroy')->name('destroy');
+Route::get('/car/destroy/{autopark_id}/{car_id}', 'MainController@destroyCar')->name('destroy.car');
 
 
 Route::get('/', 'MainController@home')->name('home');
 Route::get('/create', 'MainController@create')->name('create');
-Route::get('/edit/{id}', 'MainController@edit')->name('edit');
+Route::get('/edit/{id}/', 'MainController@edit')->name('edit');
 
 Route::get('/autoparks', 'AutoparkController@index')->name('autoparks');
 Route::get('/autoparks/{id}/show', 'AutoparkController@show')->name('autoparks.show');
