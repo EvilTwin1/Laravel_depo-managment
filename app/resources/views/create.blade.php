@@ -27,7 +27,7 @@
         <div class="form-group">
             <div class="list"></div>
         </div>
-        <input type="submit" class="btn btn-success" value="Отправить">
+        <input type="submit" class="btn btn-success" value="Сохранить">
     </form>
     <script
         src="https://code.jquery.com/jquery-3.5.1.min.js"
@@ -35,17 +35,17 @@
         crossorigin="anonymous"></script>
     <script>
         $(document).ready(function () {
-            $('#add_btn').on('click',function () {
-                var html='';
-                html+='<div class="list">';
-                html+='<label for="">Номер машины<input type="text" name="number[]"></label>';
-                html+='<label for="">Имя водителя<input type="text" name="driver_name[]"></label>';
-                html+='<a href="#" class="btn btn-danger" id="remove_btn">x</a>';
-                html+='</div>';
+            $('#add_btn').on('click', function () {
+                var html = '';
+                html += '<div class="list">';
+                html += '<label for="">Номер машины<input type="text" name="number[]"></label>';
+                html += '<label for="">Имя водителя<input type="text" name="driver_name[]"></label>';
+                html += '<a href="#" class="btn btn-danger" id="remove_btn">x</a>';
+                html += '</div>';
                 $('.form-group').append(html);
             })
         });
-        $(document).on('click','#remove_btn', function () {
+        $(document).on('click', '#remove_btn', function () {
             $(this).closest('.list').remove();
         });
 

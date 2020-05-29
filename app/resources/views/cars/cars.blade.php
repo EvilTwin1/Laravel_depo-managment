@@ -1,5 +1,6 @@
 @extends('master')
 
+
 @section('content')
     <ul class="list-group list-group-flush">
         @foreach($cars as $car)

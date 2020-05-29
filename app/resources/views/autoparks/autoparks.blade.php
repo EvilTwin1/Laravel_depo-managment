@@ -1,11 +1,7 @@
 @extends('master')
 
+
 @section('content')
-    @if (session('status'))
-        <div class="alert alert-success">
-            {{ session('status') }}
-        </div>
-    @endif
     <ul class="list-group list-group-flush">
         @foreach($depo as $dep)
             <li class="list-group-item">

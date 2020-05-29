@@ -13,12 +13,9 @@ class AutoparkController extends Controller
         return view('autoparks.autoparks', compact('depo'));
     }
 
-
     public function show($id)
     {
         $autopark = Autopark::find($id);
         return view('autoparks.autopark-details', compact('autopark'));
     }
-
-
 }
