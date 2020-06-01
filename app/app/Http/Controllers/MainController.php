@@ -142,8 +142,6 @@ class MainController extends Controller
                     $car->save();
                 }
             }
-
-
         }
 
         return redirect()->back()->with('status', 'Автопарк обновлен!');
@@ -157,13 +155,16 @@ class MainController extends Controller
 
     public function destroyCar($autopark_id, $car_id)
     {
-//        $autopark = Autopark::find($autopark_id);
-//        $car = Car::find($car_id);
-        Car::destroy($car_id);
-//        print_r($autopark,$car);
-        echo "Delete successfully $autopark_id";
-//        dd([$autopark,$car]);
-//        $car->delete();
-//        exit;
+        $autopark = Autopark::find($autopark_id);
+        $car = Car::find($car_id);
+
+        $countRelation = count($car->autoparks);
+        if ($countRelation == 1){
+            Car::destroy($car_id);
+        }else{
+            $autopark->cars()->detach($car->id);
+        }
     }
 }
+
+
